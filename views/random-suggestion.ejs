@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Random Music - Music Discovery Hub</title>
+    <link rel="stylesheet" href="/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1><i class="fas fa-music"></i> Music Discovery Hub</h1>
+            <nav class="nav">
+                <a href="/music" class="nav-link"><i class="fas fa-home"></i> Home</a>
+                <a href="/music/add" class="nav-link"><i class="fas fa-plus"></i> Add Music</a>
+                <a href="/music/random" class="nav-link active"><i class="fas fa-random"></i> Surprise Me</a>
+                <a href="/auth/logout" class="nav-link"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <div class="random-header">
+                <h2><i class="fas fa-dice"></i> Your Random Discovery</h2>
+                <p>Let music surprise you with something new</p>
+            </div>
+
+            <% if (music) { %>
+                <div class="featured-music">
+                    <div class="featured-content">
+                        <div class="music-artwork">
+                            <i class="fas fa-compact-disc spinning"></i>
+                        </div>
+                        <div class="music-details">
+                            <h3><%= music.title %></h3>
+                            <h4>by <%= music.artist %></h4>
+                            <div class="music-meta">
+                                <span class="genre-tag"><%= music.genre %></span>
+                                <span class="year-tag"><%= music.year %></span>
+                            </div>
+                            <div class="rating-large">
+                                <% for(let i = 1; i <= 5; i++) { %>
+                                    <i class="fas fa-star <%= music.rating >= i*2 ? 'filled' : '' %>"></i>
+                                <% } %>
+                                <span><%= music.rating %>/10</span>
+                            </div>
+                            <div class="music-info-detailed">
+                                <p><i class="fas fa-album"></i> Album: <%= music.album %></p>
+                                <p><i class="fas fa-clock"></i> Duration: <%= music.duration %></p>
+                            </div>
+                            <p class="description"><%= music.description %></p>
+                            <div class="action-buttons">
+                                <a href="/music/random" class="btn-primary">
+                                    <i class="fas fa-dice"></i> Another Random
+                                </a>
+                                <a href="/music" class="btn-secondary">
+                                    <i class="fas fa-list"></i> Browse All
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% } else { %>
+                <div class="no-music">
+                    <i class="fas fa-music-slash"></i>
+                    <h3>No music found</h3>
+                    <p>Start building your collection!</p>
+                    <a href="/music/add" class="btn-primary">
+                        <i class="fas fa-plus"></i> Add Your First Song
+                    </a>
+                </div>
+            <% } %>
+        </div>
+    </main>
+</body>
+</html>
