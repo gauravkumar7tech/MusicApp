@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Music Discovery Hub</title>
+    <link rel="stylesheet" href="/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1><i class="fas fa-music"></i> Music Discovery Hub</h1>
+            <nav class="nav">
+                <a href="/music" class="nav-link active"><i class="fas fa-home"></i> Home</a>
+                <a href="/music/add" class="nav-link"><i class="fas fa-plus"></i> Add Music</a>
+                <a href="/music/random" class="nav-link"><i class="fas fa-random"></i> Surprise Me</a>
+                <a href="/auth/logout" class="nav-link"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <section class="hero">
+                <h2>Discover Your Next Favorite Song</h2>
+                <p>Explore our curated collection of music across all genres</p>
+            </section>
+
+            <section class="genre-section">
+                <h3><i class="fas fa-filter"></i> Browse by Genre</h3>
+                <div class="genre-grid">
+                    <a href="/music/genre/pop" class="genre-card pop">
+                        <i class="fas fa-star"></i>
+                        <span>Pop</span>
+                    </a>
+                    <a href="/music/genre/rock" class="genre-card rock">
+                        <i class="fas fa-guitar"></i>
+                        <span>Rock</span>
+                    </a>
+                    <a href="/music/genre/jazz" class="genre-card jazz">
+                        <i class="fas fa-saxophone"></i>
+                        <span>Jazz</span>
+                    </a>
+                    <a href="/music/genre/classical" class="genre-card classical">
+                        <i class="fas fa-music"></i>
+                        <span>Classical</span>
+                    </a>
+                    <a href="/music/genre/electronic" class="genre-card electronic">
+                        <i class="fas fa-headphones"></i>
+                        <span>Electronic</span>
+                    </a>
+                    <a href="/music/genre/hiphop" class="genre-card hiphop">
+                        <i class="fas fa-microphone"></i>
+                        <span>Hip Hop</span>
+                    </a>
+                    <a href="/music/genre/haryanvi" class="genre-card haryanvi">
+                        <i class="fas fa-flag"></i>
+                        <span>Haryanvi</span>
+                    </a>
+                    <a href="/music/genre/punjabi" class="genre-card punjabi">
+                        <i class="fas fa-flag"></i>
+                        <span>Punjabi</span>
+                    </a>
+                </div>
+            </section>
+
+            <section class="music-section">
+                <h3><i class="fas fa-compact-disc"></i> Latest Additions</h3>
+                <div class="music-grid">
+                    <% music.forEach(song => { %>
+                        <div class="music-card">
+                            <div class="music-header">
+                                <h4><%= song.title %></h4>
+                                <div class="rating">
+                                    <% for(let i = 1; i <= 5; i++) { %>
+                                        <i class="fas fa-star <%= song.rating >= i*2 ? 'filled' : '' %>"></i>
+                                    <% } %>
+                                    <span><%= song.rating %>/10</span>
+                                </div>
+                            </div>
+                            <div class="music-info">
+                                <p><i class="fas fa-user"></i> <strong><%= song.artist %></strong></p>
+                                <p><i class="fas fa-album"></i> <%= song.album %></p>
+                                <p><i class="fas fa-tag"></i> <%= song.genre %></p>
+                                <p><i class="fas fa-calendar"></i> <%= song.year %></p>
+                                <p><i class="fas fa-clock"></i> <%= song.duration %></p>
+                            </div>
+                            <p class="description"><%= song.description %></p>
+                        </div>
+                    <% }) %>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Music Discovery Hub. Find your rhythm.</p>
+        </div>
+    </footer>
+</body>
+</html>
