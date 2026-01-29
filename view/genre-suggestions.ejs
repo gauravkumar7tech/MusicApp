@@ -48,6 +48,14 @@
                                 <p><i class="fas fa-clock"></i> <%= song.duration %></p>
                             </div>
                             <p class="description"><%= song.description %></p>
+                            <% if (song.audioFile) { %>
+                                <div class="audio-player">
+                                    <audio class="song-audio" controls preload="none">
+                                        <source src="/songs/<%= encodeURIComponent(song.audioFile) %>" type="audio/mpeg">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </div>
+                            <% } %>
                         </div>
                     <% }) %>
                 </div>
@@ -69,5 +77,6 @@
             <p>&copy; 2024 Music Discovery Hub. Find your rhythm.</p>
         </div>
     </footer>
+    <script src="/js/player.js"></script>
 </body>
 </html>

@@ -49,6 +49,14 @@
                                 <p><i class="fas fa-clock"></i> Duration: <%= music.duration %></p>
                             </div>
                             <p class="description"><%= music.description %></p>
+                            <% if (music.audioFile) { %>
+                                <div class="audio-player">
+                                    <audio class="song-audio" controls preload="none">
+                                        <source src="/songs/<%= encodeURIComponent(music.audioFile) %>" type="audio/mpeg">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </div>
+                            <% } %>
                             <div class="action-buttons">
                                 <a href="/music/random" class="btn-primary">
                                     <i class="fas fa-dice"></i> Another Random
@@ -72,5 +80,6 @@
             <% } %>
         </div>
     </main>
+    <script src="/js/player.js"></script>
 </body>
 </html>
