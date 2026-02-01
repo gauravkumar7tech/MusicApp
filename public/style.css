@@ -228,6 +228,7 @@ body {
     line-height: 1.5;
 }
 
+<<<<<<< HEAD
 /* Audio Player Styles */
 .audio-player {
     margin-top: 1rem;
@@ -321,6 +322,8 @@ body {
     position: relative;
 }
 
+=======
+>>>>>>> 257862c0a99a9a15cf0590c0fc915ba92c68f96c
 /* Form Styles */
 .form-container {
     background: white;
@@ -779,6 +782,7 @@ body {
     transform: translateY(-1px);
 }
 
+<<<<<<< HEAD
 /* Custom Player Styles */
 .custom-player {
     background: linear-gradient(135deg, #f8f9fa, #e9ecef);
@@ -1115,3 +1119,5 @@ body {
         width: 100%;
     }
 }
+=======
+>>>>>>> 257862c0a99a9a15cf0590c0fc915ba92c68f96c
