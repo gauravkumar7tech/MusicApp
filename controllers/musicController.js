@@ -1,4 +1,18 @@
 const Music = require('../models/Music')
+const multer = require('multer')
+const path = require('path')
+
+// Configure multer for file uploads
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'public/songs/')
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + '-' + file.originalname)
+  }
+})
+
+const upload = multer({ storage: storage })
 
 const musicController = {
   // Get all music
@@ -31,7 +45,11 @@ const musicController = {
   // Add new music
   addMusic: async (req, res) => {
     try {
-      const music = new Music(req.body)
+      const musicData = {
+        ...req.body,
+        audioFile: req.file ? req.file.filename : null
+      }
+      const music = new Music(musicData)
       await music.save()
       res.redirect('/')
     } catch (error) {
@@ -57,5 +75,8 @@ const musicController = {
   
 
 }
+
+// Export upload middleware
+musicController.upload = upload
 
 module.exports = musicController

@@ -1,3 +1,21 @@
+:root {
+    --bg-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --bg-secondary: white;
+    --text-primary: #333;
+    --text-secondary: #666;
+    --border-color: #e9ecef;
+    --shadow: rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="dark"] {
+    --bg-primary: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    --bg-secondary: #2d3748;
+    --text-primary: #e2e8f0;
+    --text-secondary: #a0aec0;
+    --border-color: #4a5568;
+    --shadow: rgba(0, 0, 0, 0.3);
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -7,9 +25,10 @@
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
-    color: #333;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: var(--text-primary);
+    background: var(--bg-primary);
     min-height: 100vh;
+    transition: all 0.3s ease;
 }
 
 .container {
@@ -20,12 +39,13 @@ body {
 
 /* Header */
 .header {
-    background: rgba(255, 255, 255, 0.95);
+    background: var(--bg-secondary);
     backdrop-filter: blur(10px);
-    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 20px var(--shadow);
     position: sticky;
     top: 0;
     z-index: 100;
+    transition: all 0.3s ease;
 }
 
 .header .container {
@@ -49,7 +69,7 @@ body {
 .nav-link {
     padding: 0.5rem 1rem;
     text-decoration: none;
-    color: #666;
+    color: var(--text-secondary);
     border-radius: 25px;
     transition: all 0.3s ease;
     font-weight: 500;
@@ -86,16 +106,17 @@ body {
 
 /* Genre Section */
 .genre-section {
-    background: white;
+    background: var(--bg-secondary);
     padding: 2rem;
     border-radius: 20px;
     margin-bottom: 2rem;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 30px var(--shadow);
+    transition: all 0.3s ease;
 }
 
 .genre-section h3 {
     margin-bottom: 1.5rem;
-    color: #333;
+    color: var(--text-primary);
     font-size: 1.5rem;
 }
 
@@ -133,18 +154,21 @@ body {
 .genre-card.classical { background: linear-gradient(45deg, #6c5ce7, #a29bfe); }
 .genre-card.electronic { background: linear-gradient(45deg, #00cec9, #55a3ff); }
 .genre-card.hiphop { background: linear-gradient(45deg, #fd79a8, #fdcb6e); }
+.genre-card.haryanvi { background: linear-gradient(45deg, #ff7675, #fab1a0); }
+.genre-card.punjabi { background: linear-gradient(45deg, #00b894, #55efc4); }
 
 /* Music Section */
 .music-section {
-    background: white;
+    background: var(--bg-secondary);
     padding: 2rem;
     border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 30px var(--shadow);
+    transition: all 0.3s ease;
 }
 
 .music-section h3 {
     margin-bottom: 1.5rem;
-    color: #333;
+    color: var(--text-primary);
     font-size: 1.5rem;
 }
 
@@ -155,7 +179,7 @@ body {
 }
 
 .music-card {
-    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
     border-radius: 15px;
     padding: 1.5rem;
     transition: all 0.3s ease;
@@ -326,17 +350,18 @@ body {
 >>>>>>> 257862c0a99a9a15cf0590c0fc915ba92c68f96c
 /* Form Styles */
 .form-container {
-    background: white;
+    background: var(--bg-secondary);
     padding: 2rem;
     border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 30px var(--shadow);
     max-width: 600px;
     margin: 0 auto;
+    transition: all 0.3s ease;
 }
 
 .form-container h2 {
     margin-bottom: 1.5rem;
-    color: #333;
+    color: var(--text-primary);
     text-align: center;
 }
 
@@ -360,7 +385,7 @@ body {
 .form-group label {
     margin-bottom: 0.5rem;
     font-weight: 600;
-    color: #555;
+    color: var(--text-secondary);
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -370,10 +395,12 @@ body {
 .form-group select,
 .form-group textarea {
     padding: 0.75rem;
-    border: 2px solid #e9ecef;
+    border: 2px solid var(--border-color);
     border-radius: 10px;
     font-size: 1rem;
     transition: border-color 0.3s ease;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
 }
 
 .form-group input:focus,
@@ -408,10 +435,11 @@ body {
 
 /* Featured Music */
 .featured-music {
-    background: white;
+    background: var(--bg-secondary);
     border-radius: 20px;
     padding: 2rem;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 30px var(--shadow);
+    transition: all 0.3s ease;
 }
 
 .featured-content {
@@ -439,12 +467,12 @@ body {
 .music-details h3 {
     font-size: 2rem;
     margin-bottom: 0.5rem;
-    color: #333;
+    color: var(--text-primary);
 }
 
 .music-details h4 {
     font-size: 1.2rem;
-    color: #666;
+    color: var(--text-secondary);
     margin-bottom: 1rem;
 }
 
@@ -467,8 +495,8 @@ body {
 }
 
 .year-tag {
-    background: #e9ecef;
-    color: #666;
+    background: var(--border-color);
+    color: var(--text-secondary);
 }
 
 .rating-large {
@@ -1121,3 +1149,49 @@ body {
 }
 =======
 >>>>>>> 257862c0a99a9a15cf0590c0fc915ba92c68f96c
+/* Theme Toggle Button */
+.theme-toggle {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    padding: 0.5rem;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+}
+
+.theme-toggle:hover {
+    background: var(--text-secondary);
+    color: var(--bg-secondary);
+    transform: scale(1.1);
+}
+
+/* Dark mode specific styles */
+[data-theme="dark"] .music-card {
+    background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+    color: var(--text-primary);
+    border-color: var(--border-color);
+}
+
+[data-theme="dark"] .btn-secondary {
+    background: var(--border-color);
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] .no-music {
+    color: var(--text-secondary);
+}
+
+[data-theme="dark"] .error-container {
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
+}
+
+[data-theme="dark"] .error-container h2 {
+    color: var(--text-primary);
+}

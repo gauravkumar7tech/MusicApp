@@ -48,6 +48,12 @@
                                 <p><i class="fas fa-clock"></i> <%= song.duration %></p>
                             </div>
                             <p class="description"><%= song.description %></p>
+                            <div class="audio-player">
+                                <audio class="song-audio" controls>
+                                    <source src="/songs/<%= song.audioFile %>" type="audio/mpeg">
+                                    Your browser does not support the audio element.
+                                </audio>
+                            </div>
                         </div>
                     <% }) %>
                 </div>
@@ -61,13 +67,50 @@
                     </a>
                 </div>
             <% } %>
-        </div>
-    </main>
+                </div>
+            </main>
 
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; 2024 Music Discovery Hub. Find your rhythm.</p>
+            <footer class="footer">
+                <div class="container">
+                    <p>&copy; 2024 Music Discovery Hub. Find your rhythm.</p>
+                </div>
+            </footer>
         </div>
-    </footer>
+    </div>
+    <script src="/js/player.js"></script>
+    <script>
+        // Theme toggle functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const themeToggle = document.getElementById('theme-toggle');
+            const body = document.body;
+            const icon = themeToggle.querySelector('i');
+
+            // Check for saved theme preference or default to light mode
+            const currentTheme = localStorage.getItem('theme') || 'light';
+            body.setAttribute('data-theme', currentTheme);
+
+            if (currentTheme === 'dark') {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            }
+
+            themeToggle.addEventListener('click', function() {
+                const currentTheme = body.getAttribute('data-theme');
+                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+
+                body.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+
+                // Toggle icon
+                if (newTheme === 'dark') {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                } else {
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                }
+            });
+        });
+    </script>
 </body>
 </html>
