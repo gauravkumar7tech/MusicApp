@@ -24,13 +24,14 @@ A modern web application for managing and discovering music with audio playback,
 
 1. Clone the repository
 ```bash
-git clone <repository-url>
+git clone <https://github.com/gauravkumar7tech/MusicApp>
 cd MusicApp-main
 ```
 
 2. Install dependencies
 ```bash
 npm install
+express install
 ```
 
 3. Create MongoDB database
