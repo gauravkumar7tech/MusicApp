@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= genre %> Movies</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1><%= genre %> Movies</h1>
+        
+        <nav>
+            <a href="/">All Movies</a>
+            <a href="/add">Add Movie</a>
+        </nav>
+
+        <div class="movies-grid">
+            <% movies.forEach(movie => { %>
+                <div class="movie-card">
+                    <h3><%= movie.title %></h3>
+                    <p><strong>Year:</strong> <%= movie.year %></p>
+                    <p><strong>Director:</strong> <%= movie.director %></p>
+                    <p><strong>Rating:</strong> <%= movie.rating %>/10</p>
+                    <p><%= movie.description %></p>
+                </div>
+            <% }) %>
+        </div>
+    </div>
+</body>
+</html>
