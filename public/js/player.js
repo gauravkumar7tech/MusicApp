@@ -1,208 +1,248 @@
-// Enhanced Audio Player Functionality
-document.addEventListener('DOMContentLoaded', function() {
-    const audioElements = document.querySelectorAll('.song-audio');
-    let currentlyPlaying = null;
+/* ── Sticky Player ── */
+(function () {
+  const audio = document.getElementById('sp-audio');
+  const player = document.getElementById('sticky-player');
+  if (!audio || !player) return;
 
-    audioElements.forEach(audio => {
-        // Add play/pause functionality
-        audio.addEventListener('play', function() {
-            // Pause other audio elements when one starts playing
-            if (currentlyPlaying && currentlyPlaying !== this) {
-                currentlyPlaying.pause();
-            }
-            currentlyPlaying = this;
-            
-            // Add visual feedback
-            const card = this.closest('.music-card');
-            card.classList.add('playing');
-            
-            // Add playing icon to title
-            const title = card.querySelector('h4');
-            if (!title.querySelector('.playing-icon')) {
-                const icon = document.createElement('i');
-                icon.className = 'fas fa-volume-up playing-icon';
-                icon.style.marginLeft = '8px';
-                icon.style.color = '#667eea';
-                icon.style.animation = 'pulse 1.5s infinite';
-                title.appendChild(icon);
-            }
-        });
+  const spTitle    = document.getElementById('sp-title');
+  const spArtist   = document.getElementById('sp-artist');
+  const spPlay     = document.getElementById('sp-play');
+  const spPrev     = document.getElementById('sp-prev');
+  const spNext     = document.getElementById('sp-next');
+  const spBar      = document.getElementById('sp-progress-bar');
+  const spFill     = document.getElementById('sp-progress-fill');
+  const spCurrent  = document.getElementById('sp-current');
+  const spDuration = document.getElementById('sp-duration');
+  const spMute     = document.getElementById('sp-mute');
+  const spVol      = document.getElementById('sp-volume-slider');
 
-        audio.addEventListener('pause', function() {
-            const card = this.closest('.music-card');
-            card.classList.remove('playing');
-            
-            // Remove playing icon
-            const playingIcon = card.querySelector('.playing-icon');
-            if (playingIcon) {
-                playingIcon.remove();
-            }
-        });
+  // Build track list from cards on this page
+  const cards = Array.from(document.querySelectorAll('#track-list .music-card'));
+  let tracks = cards.map(c => ({
+    src:    c.dataset.src,
+    title:  c.dataset.title,
+    artist: c.dataset.artist,
+    id:     c.dataset.id,
+    index:  parseInt(c.dataset.index, 10)
+  }));
 
-        audio.addEventListener('ended', function() {
-            const card = this.closest('.music-card');
-            card.classList.remove('playing');
-            currentlyPlaying = null;
-            
-            // Remove playing icon
-            const playingIcon = card.querySelector('.playing-icon');
-            if (playingIcon) {
-                playingIcon.remove();
-            }
-        });
+  let currentIdx = -1;
 
-        // Add loading state
-        audio.addEventListener('loadstart', function() {
-            const card = this.closest('.music-card');
-            card.classList.add('loading');
-        });
+  function fmt(s) {
+    if (isNaN(s)) return '0:00';
+    const m = Math.floor(s / 60), sec = Math.floor(s % 60);
+    return m + ':' + String(sec).padStart(2, '0');
+  }
 
-        audio.addEventListener('canplay', function() {
-            const card = this.closest('.music-card');
-            card.classList.remove('loading');
-        });
-
-        // Add error handling
-        audio.addEventListener('error', function() {
-            const card = this.closest('.music-card');
-            card.classList.remove('loading');
-            
-            // Show error message
-            const audioPlayer = card.querySelector('.audio-player');
-            if (audioPlayer && !audioPlayer.querySelector('.error-message')) {
-                const errorMsg = document.createElement('div');
-                errorMsg.className = 'error-message';
-                errorMsg.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Unable to load audio file';
-                errorMsg.style.cssText = `
-                    background: #ff6b6b;
-                    color: white;
-                    padding: 0.5rem;
-                    border-radius: 8px;
-                    font-size: 0.9rem;
-                    margin-top: 0.5rem;
-                    display: flex;
-                    align-items: center;
-                    gap: 0.5rem;
-                `;
-                audioPlayer.appendChild(errorMsg);
-            }
-        });
-    });
-
-    // Add keyboard shortcuts
-    document.addEventListener('keydown', function(e) {
-        if (currentlyPlaying && !e.target.matches('input, textarea')) {
-            switch(e.code) {
-                case 'Space':
-                    e.preventDefault();
-                    if (currentlyPlaying.paused) {
-                        currentlyPlaying.play();
-                    } else {
-                        currentlyPlaying.pause();
-                    }
-                    break;
-                case 'ArrowLeft':
-                    e.preventDefault();
-                    currentlyPlaying.currentTime = Math.max(0, currentlyPlaying.currentTime - 10);
-                    break;
-                case 'ArrowRight':
-                    e.preventDefault();
-                    currentlyPlaying.currentTime = Math.min(currentlyPlaying.duration, currentlyPlaying.currentTime + 10);
-                    break;
-                case 'ArrowUp':
-                    e.preventDefault();
-                    currentlyPlaying.volume = Math.min(1, currentlyPlaying.volume + 0.1);
-                    break;
-                case 'ArrowDown':
-                    e.preventDefault();
-                    currentlyPlaying.volume = Math.max(0, currentlyPlaying.volume - 0.1);
-                    break;
-            }
-        }
-    });
-
-    // Add music card hover effects
-    const musicCards = document.querySelectorAll('.music-card');
-    musicCards.forEach(card => {
-        card.addEventListener('mouseenter', function() {
-            this.style.transform = 'translateY(-8px)';
-        });
-        
-        card.addEventListener('mouseleave', function() {
-            if (!this.classList.contains('playing')) {
-                this.style.transform = 'translateY(-5px)';
-            }
-        });
-    });
-
-    // Add floating music notes animation for playing cards
-    function createMusicNote(card) {
-        const note = document.createElement('div');
-        note.innerHTML = '♪';
-        note.style.cssText = `
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            font-size: 1.5rem;
-            color: #667eea;
-            animation: float 3s ease-in-out infinite;
-            pointer-events: none;
-            z-index: 5;
-        `;
-        
-        card.style.position = 'relative';
-        card.appendChild(note);
-        
-        // Remove after animation
-        setTimeout(() => {
-            if (note.parentNode) {
-                note.parentNode.removeChild(note);
-            }
-        }, 3000);
+  function setCardState(idx, playing) {
+    cards.forEach(c => c.classList.remove('playing'));
+    if (idx >= 0 && idx < cards.length) {
+      if (playing) cards[idx].classList.add('playing');
+      const btn = cards[idx].querySelector('.play-card-btn');
+      if (btn) {
+        btn.querySelector('i').className = playing ? 'fas fa-pause' : 'fas fa-play';
+        btn.querySelector('span').textContent = playing ? 'Pause' : 'Play';
+      }
     }
+  }
 
-    // Add CSS for animations
-    const style = document.createElement('style');
-    style.textContent = `
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.7; }
-            25% { transform: translateY(-10px) rotate(5deg); opacity: 1; }
-            50% { transform: translateY(-20px) rotate(-5deg); opacity: 0.8; }
-            75% { transform: translateY(-15px) rotate(3deg); opacity: 0.9; }
-        }
-        
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-        
-        .music-card.playing {
-            background: linear-gradient(135deg, #667eea, #764ba2) !important;
-            color: white !important;
-            animation: glow 2s infinite alternate;
-        }
-        
-        @keyframes glow {
-            0% { box-shadow: 0 15px 35px rgba(102, 126, 234, 0.3); }
-            100% { box-shadow: 0 20px 40px rgba(102, 126, 234, 0.5); }
-        }
-        
-        .music-card.playing .music-info p,
-        .music-card.playing .description {
-            color: rgba(255, 255, 255, 0.9) !important;
-        }
-        
-        .music-card.playing .rating .fas.fa-star.filled {
-            color: #ffd700 !important;
-        }
-    `;
-    document.head.appendChild(style);
+  function resetCardBtn(idx) {
+    if (idx >= 0 && idx < cards.length) {
+      const btn = cards[idx].querySelector('.play-card-btn');
+      if (btn) {
+        btn.querySelector('i').className = 'fas fa-play';
+        btn.querySelector('span').textContent = 'Play';
+      }
+    }
+  }
 
-    // Create floating notes for playing cards
-    setInterval(() => {
-        const playingCard = document.querySelector('.music-card.playing');
-        if (playingCard && currentlyPlaying && !currentlyPlaying.paused) {
-            createMusicNote(playingCard);
-        }
-    }, 2000);
+  function loadTrack(idx, autoplay) {
+    if (!tracks.length) return;
+    idx = ((idx % tracks.length) + tracks.length) % tracks.length;
+    const t = tracks[idx];
+    resetCardBtn(currentIdx);
+    currentIdx = idx;
+    audio.src = t.src;
+    spTitle.textContent  = t.title;
+    spArtist.textContent = t.artist;
+    player.classList.remove('hidden');
+    document.body.classList.add('has-sticky-player');
+    if (autoplay) {
+      audio.play().catch(() => {});
+    }
+    // Persist state
+    sessionStorage.setItem('sp_src',    t.src);
+    sessionStorage.setItem('sp_title',  t.title);
+    sessionStorage.setItem('sp_artist', t.artist);
+    sessionStorage.setItem('sp_time',   '0');
+  }
+
+  function togglePlay() {
+    if (!audio.src) return;
+    if (audio.paused) {
+      audio.play().catch(() => {});
+    } else {
+      audio.pause();
+    }
+  }
+
+  audio.addEventListener('play', () => {
+    spPlay.innerHTML = '<i class="fas fa-pause"></i>';
+    setCardState(currentIdx, true);
+    if (window.Visualizer && cards[currentIdx]) window.Visualizer.start(cards[currentIdx]);
+  });
+
+  audio.addEventListener('pause', () => {
+    spPlay.innerHTML = '<i class="fas fa-play"></i>';
+    setCardState(currentIdx, false);
+    if (window.Visualizer && cards[currentIdx]) window.Visualizer.stop(cards[currentIdx]);
+  });
+
+  audio.addEventListener('ended', () => {
+    if (window.Visualizer && cards[currentIdx]) window.Visualizer.stop(cards[currentIdx]);
+    resetCardBtn(currentIdx);
+    loadTrack(currentIdx + 1, true);
+  });
+
+  audio.addEventListener('timeupdate', () => {
+    if (!audio.duration) return;
+    const pct = (audio.currentTime / audio.duration) * 100;
+    spFill.style.width = pct + '%';
+    spCurrent.textContent  = fmt(audio.currentTime);
+    spDuration.textContent = fmt(audio.duration);
+    sessionStorage.setItem('sp_time', audio.currentTime);
+  });
+
+  spBar.addEventListener('click', e => {
+    const rect = spBar.getBoundingClientRect();
+    audio.currentTime = ((e.clientX - rect.left) / rect.width) * audio.duration;
+  });
+
+  spPlay.addEventListener('click', togglePlay);
+  spPrev.addEventListener('click', () => loadTrack(currentIdx - 1, true));
+  spNext.addEventListener('click', () => loadTrack(currentIdx + 1, true));
+
+  spVol.addEventListener('input', () => {
+    audio.volume = spVol.value;
+    spMute.innerHTML = audio.volume === 0 ? '<i class="fas fa-volume-mute"></i>' : '<i class="fas fa-volume-up"></i>';
+  });
+
+  spMute.addEventListener('click', () => {
+    audio.muted = !audio.muted;
+    spMute.innerHTML = audio.muted ? '<i class="fas fa-volume-mute"></i>' : '<i class="fas fa-volume-up"></i>';
+  });
+
+  // Card play buttons
+  document.querySelectorAll('.play-card-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.dataset.index, 10);
+      if (currentIdx === idx && !audio.paused) {
+        audio.pause();
+      } else if (currentIdx === idx && audio.paused) {
+        audio.play().catch(() => {});
+      } else {
+        loadTrack(idx, true);
+      }
+    });
+  });
+
+  // Keyboard shortcuts
+  document.addEventListener('keydown', e => {
+    if (e.target.matches('input, textarea')) return;
+    if (e.code === 'Space') { e.preventDefault(); togglePlay(); }
+    if (e.code === 'ArrowLeft')  { e.preventDefault(); audio.currentTime = Math.max(0, audio.currentTime - 10); }
+    if (e.code === 'ArrowRight') { e.preventDefault(); audio.currentTime = Math.min(audio.duration || 0, audio.currentTime + 10); }
+  });
+
+  // Restore state from sessionStorage (cross-page persistence)
+  const savedSrc = sessionStorage.getItem('sp_src');
+  if (savedSrc) {
+    const savedTime = parseFloat(sessionStorage.getItem('sp_time') || '0');
+    audio.src = savedSrc;
+    spTitle.textContent  = sessionStorage.getItem('sp_title')  || '—';
+    spArtist.textContent = sessionStorage.getItem('sp_artist') || '—';
+    player.classList.remove('hidden');
+    document.body.classList.add('has-sticky-player');
+    audio.addEventListener('loadedmetadata', () => {
+      audio.currentTime = savedTime;
+    }, { once: true });
+    // Match card if on same page
+    const match = tracks.findIndex(t => t.src === savedSrc);
+    if (match !== -1) currentIdx = match;
+  }
+})();
+
+/* ── Like Buttons ── */
+document.querySelectorAll('.like-btn').forEach(btn => {
+  btn.addEventListener('click', async () => {
+    const id = btn.dataset.id;
+    const res = await fetch(`/music/like/${id}`, { method: 'POST' });
+    if (res.ok) {
+      const data = await res.json();
+      btn.classList.toggle('liked', data.liked);
+    }
+  });
 });
+
+/* ── Search ── */
+(function () {
+  const input    = document.getElementById('global-search');
+  const dropdown = document.getElementById('search-dropdown');
+  if (!input || !dropdown) return;
+
+  let timer;
+
+  input.addEventListener('input', () => {
+    clearTimeout(timer);
+    const q = input.value.trim();
+    if (!q) { dropdown.classList.add('hidden'); dropdown.innerHTML = ''; return; }
+    timer = setTimeout(async () => {
+      const res = await fetch(`/music/search?q=${encodeURIComponent(q)}`, {
+        headers: { Accept: 'application/json' }
+      });
+      const songs = await res.json();
+      if (!songs.length) {
+        dropdown.innerHTML = '<div class="sd-empty">No results</div>';
+      } else {
+        dropdown.innerHTML = songs.slice(0, 6).map(s =>
+          `<a class="sd-item" href="/music/search?q=${encodeURIComponent(q)}">
+            <span class="sd-title">${s.title}</span>
+            <span class="sd-artist">${s.artist}</span>
+          </a>`
+        ).join('') + (songs.length > 6
+          ? `<a class="sd-more" href="/music/search?q=${encodeURIComponent(q)}">See all ${songs.length} results</a>`
+          : '');
+      }
+      dropdown.classList.remove('hidden');
+    }, 250);
+  });
+
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && input.value.trim()) {
+      window.location.href = `/music/search?q=${encodeURIComponent(input.value.trim())}`;
+    }
+    if (e.key === 'Escape') { dropdown.classList.add('hidden'); }
+  });
+
+  document.addEventListener('click', e => {
+    if (!e.target.closest('.search-box')) dropdown.classList.add('hidden');
+  });
+})();
+
+/* ── Theme Toggle ── */
+(function () {
+  const toggle = document.getElementById('theme-toggle');
+  if (!toggle) return;
+  const body = document.body;
+  const icon = toggle.querySelector('i');
+  const saved = localStorage.getItem('theme') || 'light';
+  body.setAttribute('data-theme', saved);
+  if (saved === 'dark') { icon.classList.replace('fa-moon', 'fa-sun'); }
+
+  toggle.addEventListener('click', () => {
+    const next = body.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+    body.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+    icon.classList.replace(next === 'dark' ? 'fa-moon' : 'fa-sun', next === 'dark' ? 'fa-sun' : 'fa-moon');
+  });
+})();

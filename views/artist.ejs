@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= artist %> - Music Discovery Hub</title>
+    <link rel="stylesheet" href="/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+<%- include('_nav', { activePage: '' }) %>
+
+<main class="main">
+    <div class="container">
+        <div class="artist-header">
+            <div class="artist-avatar"><i class="fas fa-user-circle"></i></div>
+            <div class="artist-meta">
+                <h2><%= artist %></h2>
+                <p><%= music.length %> track<%= music.length !== 1 ? 's' : '' %> on this platform</p>
+                <a href="/music" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Home</a>
+            </div>
+        </div>
+
+        <% if (music && music.length > 0) { %>
+        <section class="music-section">
+            <h3><i class="fas fa-compact-disc"></i> Discography</h3>
+            <div class="music-grid" id="track-list">
+                <% music.forEach((song, idx) => { %>
+                <div class="music-card"
+                     data-index="<%= idx %>"
+                     data-src="/songs/<%= song.audioFile %>"
+                     data-title="<%= song.title %>"
+                     data-artist="<%= song.artist %>"
+                     data-id="<%= song._id %>">
+                    <div class="music-header">
+                        <h4><%= song.title %></h4>
+                        <div class="rating">
+                            <% for(let i = 1; i <= 5; i++) { %>
+                                <i class="fas fa-star <%= song.rating >= i*2 ? 'filled' : '' %>"></i>
+                            <% } %>
+                            <span><%= song.rating %>/10</span>
+                        </div>
+                    </div>
+                    <div class="music-info">
+                        <p><i class="fas fa-compact-disc"></i> <%= song.album %></p>
+                        <p><i class="fas fa-tag"></i> <%= song.genre %></p>
+                        <p><i class="fas fa-calendar"></i> <%= song.year %></p>
+                        <p><i class="fas fa-clock"></i> <%= song.duration %></p>
+                    </div>
+                    <p class="description"><%= song.description %></p>
+                    <div class="card-actions">
+                        <button class="play-card-btn" data-index="<%= idx %>">
+                            <i class="fas fa-play"></i> <span>Play</span>
+                        </button>
+                        <button class="like-btn <%= likedIds.includes(song._id.toString()) ? 'liked' : '' %>" data-id="<%= song._id %>">
+                            <i class="fas fa-heart"></i>
+                        </button>
+                    </div>
+                </div>
+                <% }) %>
+            </div>
+        </section>
+        <% } else { %>
+        <div class="no-music">
+            <i class="fas fa-music"></i>
+            <h3>No tracks found for <%= artist %></h3>
+        </div>
+        <% } %>
+    </div>
+</main>
+
+<footer class="footer">
+    <div class="container"><p>&copy; 2024 Music Discovery Hub. Find your rhythm.</p></div>
+</footer>
+
+<%- include('_sticky-player') %>
+<script src="/js/player.js"></script>
+</body>
+</html>

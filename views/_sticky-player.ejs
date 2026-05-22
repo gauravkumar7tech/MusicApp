@@ -1,0 +1,26 @@
+<!-- Sticky Bottom Player -->
+<div id="sticky-player" class="sticky-player hidden">
+    <div class="sp-track-info">
+        <div class="sp-title" id="sp-title">—</div>
+        <div class="sp-artist" id="sp-artist">—</div>
+    </div>
+    <div class="sp-center">
+        <div class="sp-controls">
+            <button id="sp-prev" title="Previous"><i class="fas fa-step-backward"></i></button>
+            <button id="sp-play" title="Play/Pause"><i class="fas fa-play"></i></button>
+            <button id="sp-next" title="Next"><i class="fas fa-step-forward"></i></button>
+        </div>
+        <div class="sp-progress-wrap">
+            <span id="sp-current">0:00</span>
+            <div id="sp-progress-bar" class="sp-progress-bar">
+                <div id="sp-progress-fill" class="sp-progress-fill"></div>
+            </div>
+            <span id="sp-duration">0:00</span>
+        </div>
+    </div>
+    <div class="sp-volume">
+        <button id="sp-mute" title="Mute"><i class="fas fa-volume-up"></i></button>
+        <input type="range" id="sp-volume-slider" min="0" max="1" step="0.02" value="1">
+    </div>
+</div>
+<audio id="sp-audio"></audio>

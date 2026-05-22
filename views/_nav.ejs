@@ -1,0 +1,20 @@
+<header class="header">
+    <div class="container header-inner">
+        <h1><a href="/music" style="text-decoration:none;color:inherit"><i class="fas fa-music"></i> Music Discovery Hub</a></h1>
+        <div class="search-wrapper">
+            <div class="search-box">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" id="global-search" placeholder="Search songs, artists, genres…" autocomplete="off">
+                <div id="search-dropdown" class="search-dropdown hidden"></div>
+            </div>
+        </div>
+        <nav class="nav">
+            <a href="/music" class="nav-link <%= typeof activePage !== 'undefined' && activePage === 'home' ? 'active' : '' %>"><i class="fas fa-home"></i> Home</a>
+            <a href="/music/library" class="nav-link <%= typeof activePage !== 'undefined' && activePage === 'library' ? 'active' : '' %>"><i class="fas fa-heart"></i> My Library</a>
+            <a href="/music/add" class="nav-link"><i class="fas fa-plus"></i> Add Music</a>
+            <a href="/music/random" class="nav-link"><i class="fas fa-random"></i> Surprise Me</a>
+            <a id="theme-toggle" class="theme-toggle nav-link" title="Toggle theme"><i class="fas fa-moon"></i></a>
+            <a href="/auth/logout" class="nav-link"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </nav>
+    </div>
+</header>
