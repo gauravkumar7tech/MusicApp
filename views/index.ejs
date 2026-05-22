@@ -16,55 +16,42 @@
             <p>Explore our curated collection of music across all genres</p>
         </section>
 
-        <!-- ── Feature 1: Vibe Matcher ── -->
-        <section class="vibe-section">
-            <h3><i class="fas fa-magic"></i> Vibe Matcher</h3>
-            <p class="vibe-sub">Pick a mood — we'll find your perfect tracks</p>
-            <div class="vibe-grid">
-                <button class="vibe-btn" data-vibe="upbeat">⚡ Upbeat</button>
-                <button class="vibe-btn" data-vibe="intense">🔥 Intense</button>
-                <button class="vibe-btn" data-vibe="melancholic">🌧️ Melancholic</button>
-                <button class="vibe-btn" data-vibe="chill">🌊 Chill</button>
-                <button class="vibe-btn" data-vibe="contemplative">🌙 Contemplative</button>
-                <button class="vibe-btn" data-vibe="powerful">💪 Powerful</button>
-            </div>
-            <div id="vibe-results" class="vibe-results hidden">
-                <div id="vibe-message" class="vibe-message"></div>
-                <div id="vibe-list" class="vibe-list"></div>
-            </div>
-        </section>
-
         <!-- ── Feature 3: Genre Explorer ── -->
         <section class="genre-section">
             <h3><i class="fas fa-filter"></i> Genre Explorer</h3>
             <div class="genre-grid">
-                <a href="/music/genre/pop" class="genre-card pop" data-preview="Get Away">
+                <a href="/music/genre/pop" class="genre-card pop">
                     <i class="fas fa-star"></i><span>Pop</span>
                     <div class="genre-tooltip">🎵 Get Away</div>
                 </a>
-                <a href="/music/genre/rock" class="genre-card rock" data-preview="Manimal · Brother · Scarwhores">
+                <a href="/music/genre/rock" class="genre-card rock">
                     <i class="fas fa-guitar"></i><span>Rock</span>
                     <div class="genre-tooltip">🎸 Manimal · Brother · Scarwhores</div>
                 </a>
-                <a href="/music/genre/jazz" class="genre-card jazz" data-preview="Solitude">
+                <a href="/music/genre/jazz" class="genre-card jazz">
                     <i class="fas fa-saxophone"></i><span>Jazz</span>
                     <div class="genre-tooltip">🎷 Solitude</div>
                 </a>
-                <a href="/music/genre/classical" class="genre-card classical" data-preview="Neruda">
+                <a href="/music/genre/classical" class="genre-card classical">
                     <i class="fas fa-music"></i><span>Classical</span>
                     <div class="genre-tooltip">🎻 Neruda</div>
                 </a>
-                <a href="/music/genre/electronic" class="genre-card electronic" data-preview="Throne · Ateraxia">
+                <a href="/music/genre/electronic" class="genre-card electronic">
                     <i class="fas fa-headphones"></i><span>Electronic</span>
                     <div class="genre-tooltip">🎛️ Throne · Ateraxia</div>
                 </a>
-                <a href="/music/genre/hiphop" class="genre-card hiphop" data-preview="J5">
+                <a href="/music/genre/hiphop" class="genre-card hiphop">
                     <i class="fas fa-microphone"></i><span>Hip Hop</span>
                     <div class="genre-tooltip">🎤 J5</div>
                 </a>
             </div>
         </section>
 
+        <!-- ── Two-column: Track Grid (left) + Vibe Matcher sidebar (right) ── -->
+        <div class="content-with-sidebar">
+
+            <!-- LEFT: Track Grid -->
+            <div class="content-main">
         <section class="music-section">
             <div class="section-toolbar">
                 <h3><i class="fas fa-compact-disc"></i> Latest Additions</h3>
@@ -140,6 +127,29 @@
             </div>
             <% } %>
         </section>
+            </div><!-- /.content-main -->
+
+            <!-- RIGHT: Vibe Matcher Sidebar -->
+            <aside class="vibe-sidebar">
+                <div class="vibe-section">
+                    <h3><i class="fas fa-magic"></i> Vibe Matcher</h3>
+                    <p class="vibe-sub">Pick a mood &mdash; we'll find your tracks</p>
+                    <div class="vibe-grid">
+                        <button class="vibe-btn" data-vibe="upbeat">⚡ Upbeat</button>
+                        <button class="vibe-btn" data-vibe="intense">🔥 Intense</button>
+                        <button class="vibe-btn" data-vibe="melancholic">🌧️ Melancholic</button>
+                        <button class="vibe-btn" data-vibe="chill">🌊 Chill</button>
+                        <button class="vibe-btn" data-vibe="contemplative">🌙 Contemplative</button>
+                        <button class="vibe-btn" data-vibe="powerful">💪 Powerful</button>
+                    </div>
+                    <div id="vibe-results" class="vibe-results hidden">
+                        <div id="vibe-message" class="vibe-message"></div>
+                        <div id="vibe-list" class="vibe-list"></div>
+                    </div>
+                </div>
+            </aside><!-- /.vibe-sidebar -->
+
+        </div><!-- /.content-with-sidebar -->
     </div>
 </main>
 

@@ -1963,3 +1963,74 @@ body.has-sticky-player {
     .chaos-slider-wrap { flex-wrap: wrap; justify-content: center; }
     #chaos-slider { width: 70px; }
 }
+
+/* ═══════════════════════════════════════════
+   TWO-COLUMN LAYOUT: Track Grid + Vibe Sidebar
+   ═══════════════════════════════════════════ */
+
+.content-with-sidebar {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 1.5rem;
+    align-items: start;
+}
+
+.content-main { min-width: 0; }
+
+/* ── Vibe Matcher Sidebar ── */
+.vibe-sidebar {
+    position: sticky;
+    top: 80px; /* clears the fixed header */
+}
+
+.vibe-sidebar .vibe-section {
+    border-radius: 20px;
+    padding: 1.5rem;
+    text-align: left;
+    margin-bottom: 0;
+}
+
+.vibe-sidebar .vibe-grid {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+}
+
+.vibe-sidebar .vibe-btn {
+    width: 100%;
+    text-align: left;
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+}
+
+.vibe-sidebar .vibe-list {
+    max-height: 340px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255,255,255,0.2) transparent;
+}
+
+.vibe-sidebar .vibe-list::-webkit-scrollbar { width: 4px; }
+.vibe-sidebar .vibe-list::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.2);
+    border-radius: 4px;
+}
+
+/* Collapse to single column on smaller screens */
+@media (max-width: 1024px) {
+    .content-with-sidebar {
+        grid-template-columns: 1fr;
+    }
+
+    .vibe-sidebar {
+        position: static;
+        order: -1; /* show above track grid on mobile */
+    }
+
+    .vibe-sidebar .vibe-grid {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .vibe-sidebar .vibe-btn { width: auto; }
+}
