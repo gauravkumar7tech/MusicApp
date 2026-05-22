@@ -16,30 +16,76 @@
             <p>Explore our curated collection of music across all genres</p>
         </section>
 
+        <!-- ── Feature 1: Vibe Matcher ── -->
+        <section class="vibe-section">
+            <h3><i class="fas fa-magic"></i> Vibe Matcher</h3>
+            <p class="vibe-sub">Pick a mood — we'll find your perfect tracks</p>
+            <div class="vibe-grid">
+                <button class="vibe-btn" data-vibe="upbeat">⚡ Upbeat</button>
+                <button class="vibe-btn" data-vibe="intense">🔥 Intense</button>
+                <button class="vibe-btn" data-vibe="melancholic">🌧️ Melancholic</button>
+                <button class="vibe-btn" data-vibe="chill">🌊 Chill</button>
+                <button class="vibe-btn" data-vibe="contemplative">🌙 Contemplative</button>
+                <button class="vibe-btn" data-vibe="powerful">💪 Powerful</button>
+            </div>
+            <div id="vibe-results" class="vibe-results hidden">
+                <div id="vibe-message" class="vibe-message"></div>
+                <div id="vibe-list" class="vibe-list"></div>
+            </div>
+        </section>
+
+        <!-- ── Feature 3: Genre Explorer ── -->
         <section class="genre-section">
-            <h3><i class="fas fa-filter"></i> Browse by Genre</h3>
+            <h3><i class="fas fa-filter"></i> Genre Explorer</h3>
             <div class="genre-grid">
-                <a href="/music/genre/pop" class="genre-card pop"><i class="fas fa-star"></i><span>Pop</span></a>
-                <a href="/music/genre/rock" class="genre-card rock"><i class="fas fa-guitar"></i><span>Rock</span></a>
-                <a href="/music/genre/jazz" class="genre-card jazz"><i class="fas fa-saxophone"></i><span>Jazz</span></a>
-                <a href="/music/genre/classical" class="genre-card classical"><i class="fas fa-music"></i><span>Classical</span></a>
-                <a href="/music/genre/electronic" class="genre-card electronic"><i class="fas fa-headphones"></i><span>Electronic</span></a>
-                <a href="/music/genre/hiphop" class="genre-card hiphop"><i class="fas fa-microphone"></i><span>Hip Hop</span></a>
-                <!-- <a href="/music/genre/punjabi" class="genre-card punjabi"><i class="fas fa-drum"></i><span>Punjabi</span></a>
-                <a href="/music/genre/haryanvi" class="genre-card haryanvi"><i class="fas fa-fire"></i><span>Haryanvi</span></a> -->
+                <a href="/music/genre/pop" class="genre-card pop" data-preview="Get Away">
+                    <i class="fas fa-star"></i><span>Pop</span>
+                    <div class="genre-tooltip">🎵 Get Away</div>
+                </a>
+                <a href="/music/genre/rock" class="genre-card rock" data-preview="Manimal · Brother · Scarwhores">
+                    <i class="fas fa-guitar"></i><span>Rock</span>
+                    <div class="genre-tooltip">🎸 Manimal · Brother · Scarwhores</div>
+                </a>
+                <a href="/music/genre/jazz" class="genre-card jazz" data-preview="Solitude">
+                    <i class="fas fa-saxophone"></i><span>Jazz</span>
+                    <div class="genre-tooltip">🎷 Solitude</div>
+                </a>
+                <a href="/music/genre/classical" class="genre-card classical" data-preview="Neruda">
+                    <i class="fas fa-music"></i><span>Classical</span>
+                    <div class="genre-tooltip">🎻 Neruda</div>
+                </a>
+                <a href="/music/genre/electronic" class="genre-card electronic" data-preview="Throne · Ateraxia">
+                    <i class="fas fa-headphones"></i><span>Electronic</span>
+                    <div class="genre-tooltip">🎛️ Throne · Ateraxia</div>
+                </a>
+                <a href="/music/genre/hiphop" class="genre-card hiphop" data-preview="J5">
+                    <i class="fas fa-microphone"></i><span>Hip Hop</span>
+                    <div class="genre-tooltip">🎤 J5</div>
+                </a>
             </div>
         </section>
 
         <section class="music-section">
             <div class="section-toolbar">
                 <h3><i class="fas fa-compact-disc"></i> Latest Additions</h3>
-                <div id="mood-filter-bar" class="mood-filter-bar">
-                    <span class="mood-label"><i class="fas fa-sliders-h"></i> Mood:</span>
-                    <button class="mood-pill active" data-mood="all">All</button>
-                    <button class="mood-pill" data-mood="upbeat">Upbeat</button>
-                    <button class="mood-pill" data-mood="intense">Intense</button>
-                    <button class="mood-pill" data-mood="melancholic">Melancholic</button>
-                    <button class="mood-pill" data-mood="chill">Chill</button>
+                <div style="display:flex;gap:0.75rem;align-items:center;flex-wrap:wrap;">
+                    <!-- Feature 5: Chaos-to-Calm slider -->
+                    <div class="chaos-slider-wrap">
+                        <span class="chaos-label">🔥 Chaos</span>
+                        <input type="range" id="chaos-slider" min="1" max="10" value="5" title="Drag to sort by energy">
+                        <span class="chaos-label">🌊 Calm</span>
+                        <button id="chaos-sort-btn" class="chaos-sort-btn" title="Sort playlist by energy">
+                            <i class="fas fa-sort-amount-down"></i>
+                        </button>
+                    </div>
+                    <div id="mood-filter-bar" class="mood-filter-bar">
+                        <span class="mood-label"><i class="fas fa-sliders-h"></i> Mood:</span>
+                        <button class="mood-pill active" data-mood="all">All</button>
+                        <button class="mood-pill" data-mood="upbeat">Upbeat</button>
+                        <button class="mood-pill" data-mood="intense">Intense</button>
+                        <button class="mood-pill" data-mood="melancholic">Melancholic</button>
+                        <button class="mood-pill" data-mood="chill">Chill</button>
+                    </div>
                 </div>
             </div>
             <% if (music && music.length > 0) { %>
@@ -51,9 +97,15 @@
                      data-title="<%= song.title %>"
                      data-artist="<%= song.artist %>"
                      data-id="<%= song._id %>"
-                     data-mood="<%= ({'rock':'intense','electronic':'upbeat','jazz':'chill','classical':'melancholic','pop':'upbeat','hiphop':'intense','ballad':'melancholic','punjabi':'upbeat','haryanvi':'intense'}[song.genre && song.genre.toLowerCase()] || 'chill') %>">
+                     data-mood="<%= ({'rock':'intense','electronic':'upbeat','jazz':'chill','classical':'melancholic','pop':'upbeat','hiphop':'intense','ballad':'melancholic','punjabi':'upbeat','haryanvi':'intense'}[song.genre && song.genre.toLowerCase()] || 'chill') %>"
+                     data-energy="<%= song.energy || 5 %>">
                     <div class="music-header">
-                        <h4><%= song.title %></h4>
+                        <h4>
+                            <%= song.title %>
+                            <% if (song.isLive || song.title.toLowerCase().includes('live')) { %>
+                                <span class="live-badge"><i class="fas fa-circle"></i> LIVE</span>
+                            <% } %>
+                        </h4>
                         <div class="rating">
                             <% for(let i = 1; i <= 5; i++) { %>
                                 <i class="fas fa-star <%= song.rating >= i*2 ? 'filled' : '' %>"></i>
@@ -99,6 +151,7 @@
 <script src="/js/visualizer.js"></script>
 <script src="/js/player.js"></script>
 <script src="/js/mood-filter.js"></script>
+<script src="/js/features.js"></script>
 <script src="/js/canvas-bg.js"></script>
 </body>
 </html>

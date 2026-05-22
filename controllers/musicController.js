@@ -106,6 +106,63 @@ const musicController = {
     } catch (error) {
       res.status(500).render('error', { error: error.message })
     }
+  },
+
+  // ── Feature 1: Vibe Matcher — filter by mood ──
+  vibeMatcher: async (req, res) => {
+    try {
+      const mood = (req.query.mood || '').trim().toLowerCase()
+      if (!mood) return res.json({ songs: [], message: 'Please select a mood.' })
+      // Derive mood from stored field OR fall back to genre mapping
+      const GENRE_MOOD = { rock:'intense', electronic:'upbeat', jazz:'chill', classical:'melancholic', pop:'upbeat', hiphop:'intense', ballad:'melancholic', punjabi:'upbeat', haryanvi:'intense' }
+      const all = await Music.find().lean()
+      const songs = all.filter(s => {
+        const m = s.mood || GENRE_MOOD[s.genre && s.genre.toLowerCase()] || 'chill'
+        return m === mood
+      })
+      if (!songs.length) return res.json({ songs: [], message: `No tracks found for mood "${mood}". Try another vibe!` })
+      res.json({ songs })
+    } catch (e) {
+      res.status(500).json({ songs: [], message: e.message })
+    }
+  },
+
+  // ── Feature 2: Auto-Queue — next song by genre similarity (20% random jump) ──
+  autoQueue: async (req, res) => {
+    try {
+      const { currentId } = req.query
+      const current = await Music.findById(currentId).lean()
+      if (!current) return res.status(404).json({ error: 'Track not found' })
+      const all = await Music.find({ _id: { $ne: currentId } }).lean()
+      if (!all.length) return res.json(null)
+      // 20% chance of random genre jump
+      const useRandom = Math.random() < 0.2
+      const pool = useRandom ? all : all.filter(s => s.genre === current.genre)
+      const next = (pool.length ? pool : all)[Math.floor(Math.random() * (pool.length || all.length))]
+      res.json(next)
+    } catch (e) {
+      res.status(500).json({ error: e.message })
+    }
+  },
+
+  // ── Feature 5: Chaos-to-Calm sorted playlist ──
+  chaosToCalm: async (req, res) => {
+    try {
+      const ENERGY_MAP = {
+        'victims of chaos': 10, 'brother': 9, 'manimal': 9, 'scarwhores': 8,
+        'throne': 8, 'ateraxia': 7, 'j5': 7, 'billo bagge': 6,
+        'get away': 5, 'highschool funeral': 4, 'neruda': 3, 'solitude': 2
+      }
+      const all = await Music.find().lean()
+      const sorted = all.sort((a, b) => {
+        const ea = a.energy || ENERGY_MAP[a.title.toLowerCase()] || 5
+        const eb = b.energy || ENERGY_MAP[b.title.toLowerCase()] || 5
+        return eb - ea  // high energy first
+      })
+      res.json(sorted)
+    } catch (e) {
+      res.status(500).json({ error: e.message })
+    }
   }
 }
 

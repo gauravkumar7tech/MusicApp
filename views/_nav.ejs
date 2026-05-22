@@ -13,6 +13,7 @@
             <a href="/music/library" class="nav-link <%= typeof activePage !== 'undefined' && activePage === 'library' ? 'active' : '' %>"><i class="fas fa-heart"></i> My Library</a>
             <a href="/music/add" class="nav-link"><i class="fas fa-plus"></i> Add Music</a>
             <a href="/music/random" class="nav-link"><i class="fas fa-random"></i> Surprise Me</a>
+            <button id="live-filter-btn" class="nav-link live-filter-btn" title="Show only Live tracks"><i class="fas fa-circle" style="color:#ff4444;font-size:0.6rem;vertical-align:middle;"></i> Live</button>
             <a id="theme-toggle" class="theme-toggle nav-link" title="Toggle theme"><i class="fas fa-moon"></i></a>
             <a href="/auth/logout" class="nav-link"><i class="fas fa-sign-out-alt"></i> Logout</a>
         </nav>

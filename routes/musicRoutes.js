@@ -11,5 +11,8 @@ router.get('/search', musicController.search)
 router.get('/artist/:name', musicController.getArtist)
 router.post('/like/:id', musicController.toggleLike)
 router.get('/library', musicController.getLibrary)
+router.get('/vibe', musicController.vibeMatcher)
+router.get('/auto-queue', musicController.autoQueue)
+router.get('/chaos-to-calm', musicController.chaosToCalm)
 
 module.exports = router
