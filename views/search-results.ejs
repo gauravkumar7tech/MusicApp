@@ -6,58 +6,70 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
+<canvas id="bg-canvas" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;"></canvas>
 <%- include('_nav', { activePage: '' }) %>
 
 <main class="main">
     <div class="container">
-        <div class="genre-header">
+        <section class="hero">
             <h2><i class="fas fa-search"></i> Results for "<%= query %>"</h2>
             <p><%= music.length %> track<%= music.length !== 1 ? 's' : '' %> found</p>
-            <a href="/music" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Home</a>
-        </div>
+        </section>
 
         <% if (music && music.length > 0) { %>
-        <div class="music-grid" id="track-list">
-            <% music.forEach((song, idx) => { %>
-            <div class="music-card"
-                 data-index="<%= idx %>"
-                 data-src="/songs/<%= song.audioFile %>"
-                 data-title="<%= song.title %>"
-                 data-artist="<%= song.artist %>"
-                 data-id="<%= song._id %>">
-                <div class="music-header">
-                    <h4><%= song.title %></h4>
-                    <div class="rating">
-                        <% for(let i = 1; i <= 5; i++) { %>
-                            <i class="fas fa-star <%= song.rating >= i*2 ? 'filled' : '' %>"></i>
-                        <% } %>
-                        <span><%= song.rating %>/10</span>
+        <section class="music-section">
+            <div class="section-toolbar">
+                <h3><i class="fas fa-compact-disc"></i> Matches</h3>
+                <a href="/music" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Home</a>
+            </div>
+            <div class="music-grid" id="track-list">
+                <% music.forEach((song, idx) => { %>
+                <div class="music-card"
+                     data-index="<%= idx %>"
+                     data-src="/songs/<%= song.audioFile %>"
+                     data-title="<%= song.title %>"
+                     data-artist="<%= song.artist %>"
+                     data-id="<%= song._id %>">
+                    <div class="music-header">
+                        <h4>
+                            <%= song.title %>
+                            <% if (song.isLive || song.title.toLowerCase().includes('live')) { %>
+                                <span class="live-badge"><i class="fas fa-circle"></i> LIVE</span>
+                            <% } %>
+                        </h4>
+                        <div class="rating">
+                            <% for(let i = 1; i <= 5; i++) { %>
+                                <i class="fas fa-star <%= song.rating >= i*2 ? 'filled' : '' %>"></i>
+                            <% } %>
+                            <span><%= song.rating %>/10</span>
+                        </div>
+                    </div>
+                    <div class="music-info">
+                        <p><i class="fas fa-user"></i> <a href="/music/artist/<%= encodeURIComponent(song.artist) %>" class="artist-link"><strong><%= song.artist %></strong></a></p>
+                        <p><i class="fas fa-compact-disc"></i> <%= song.album %></p>
+                        <p><i class="fas fa-tag"></i> <%= song.genre %></p>
+                        <p><i class="fas fa-calendar"></i> <%= song.year %></p>
+                        <p><i class="fas fa-clock"></i> <%= song.duration %></p>
+                    </div>
+                    <p class="description"><%= song.description %></p>
+                    <div class="card-actions">
+                        <button class="play-card-btn" data-index="<%= idx %>">
+                            <i class="fas fa-play"></i> <span>Play</span>
+                        </button>
+                        <button class="like-btn <%= likedIds.includes(song._id.toString()) ? 'liked' : '' %>" data-id="<%= song._id %>">
+                            <i class="fas fa-heart"></i>
+                        </button>
                     </div>
                 </div>
-                <div class="music-info">
-                    <p><i class="fas fa-user"></i> <a href="/music/artist/<%= encodeURIComponent(song.artist) %>" class="artist-link"><strong><%= song.artist %></strong></a></p>
-                    <p><i class="fas fa-compact-disc"></i> <%= song.album %></p>
-                    <p><i class="fas fa-tag"></i> <%= song.genre %></p>
-                    <p><i class="fas fa-calendar"></i> <%= song.year %></p>
-                    <p><i class="fas fa-clock"></i> <%= song.duration %></p>
-                </div>
-                <p class="description"><%= song.description %></p>
-                <div class="card-actions">
-                    <button class="play-card-btn" data-index="<%= idx %>">
-                        <i class="fas fa-play"></i> <span>Play</span>
-                    </button>
-                    <button class="like-btn <%= likedIds.includes(song._id.toString()) ? 'liked' : '' %>" data-id="<%= song._id %>">
-                        <i class="fas fa-heart"></i>
-                    </button>
-                </div>
+                <% }) %>
             </div>
-            <% }) %>
-        </div>
+        </section>
         <% } else { %>
         <div class="no-music">
             <i class="fas fa-search"></i>
             <h3>No results for "<%= query %>"</h3>
-            <p>Try a different search term or <a href="/music/add" class="btn-primary">add a new track</a></p>
+            <p>Try a different term or <a href="/music/add" class="btn-primary">add a new track</a></p>
+            <a href="/music" class="btn-secondary" style="margin-top:1rem;display:inline-flex;"><i class="fas fa-arrow-left"></i> Back to Home</a>
         </div>
         <% } %>
     </div>
@@ -68,6 +80,8 @@
 </footer>
 
 <%- include('_sticky-player') %>
+<script src="/js/visualizer.js"></script>
 <script src="/js/player.js"></script>
+<script src="/js/canvas-bg.js"></script>
 </body>
 </html>

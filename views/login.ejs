@@ -6,79 +6,47 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
-    <a id="theme-toggle" class="theme-toggle" title="Toggle theme" style="position: fixed; top: 20px; right: 20px; z-index: 1000;">
-        <i class="fas fa-moon"></i>
-    </a>
-    <div class="auth-container">
-        <div class="auth-card">
-            <div class="auth-header">
-                <i class="fas fa-music"></i>
-                <h1>Welcome Back</h1>
-                <p>Sign in to your Music Discovery Hub account</p>
+<canvas id="bg-canvas" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;"></canvas>
+
+<button id="theme-toggle" class="theme-toggle" title="Toggle theme" style="position:fixed;top:20px;right:20px;z-index:1000;">
+    <i class="fas fa-moon"></i>
+</button>
+
+<div class="auth-container" style="position:relative;z-index:1;">
+    <div class="auth-card">
+        <div class="auth-header">
+            <i class="fas fa-music"></i>
+            <h1>Welcome Back</h1>
+            <p>Sign in to your Music Discovery Hub account</p>
+        </div>
+
+        <% if (error) { %>
+            <div class="error-message">
+                <i class="fas fa-exclamation-triangle"></i> <%= error %>
             </div>
-            
-            <% if (error) { %>
-                <div class="error-message">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    <%= error %>
-                </div>
-            <% } %>
-            
-            <form action="/auth/login" method="POST" class="auth-form">
-                <div class="form-group">
-                    <label><i class="fas fa-user"></i> Username</label>
-                    <input type="text" name="username" placeholder="Enter your username" required>
-                </div>
-                
-                <div class="form-group">
-                    <label><i class="fas fa-lock"></i> Password</label>
-                    <input type="password" name="password" placeholder="Enter your password" required>
-                </div>
-                
-                <button type="submit" class="auth-btn">
-                    <i class="fas fa-sign-in-alt"></i> Sign In
-                </button>
-            </form>
-            
-            <div class="auth-footer">
-                <p>Don't have an account? <a href="/auth/register">Create one here</a></p>
+        <% } %>
+
+        <form action="/auth/login" method="POST" class="auth-form">
+            <div class="form-group">
+                <label><i class="fas fa-user"></i> Username</label>
+                <input type="text" name="username" placeholder="Enter your username" required>
             </div>
+            <div class="form-group">
+                <label><i class="fas fa-lock"></i> Password</label>
+                <input type="password" name="password" placeholder="Enter your password" required>
+            </div>
+            <button type="submit" class="auth-btn">
+                <i class="fas fa-sign-in-alt"></i> Sign In
+            </button>
+        </form>
+
+        <div class="auth-footer">
+            <p>Don't have an account? <a href="/auth/register">Create one here</a></p>
         </div>
     </div>
+</div>
 
-    <script>
-        // Theme toggle functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            const themeToggle = document.getElementById('theme-toggle');
-            const body = document.body;
-            const icon = themeToggle.querySelector('i');
-
-            // Check for saved theme preference or default to light mode
-            const currentTheme = localStorage.getItem('theme') || 'light';
-            body.setAttribute('data-theme', currentTheme);
-
-            if (currentTheme === 'dark') {
-                icon.classList.remove('fa-moon');
-                icon.classList.add('fa-sun');
-            }
-
-            themeToggle.addEventListener('click', function() {
-                const currentTheme = body.getAttribute('data-theme');
-                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-
-                body.setAttribute('data-theme', newTheme);
-                localStorage.setItem('theme', newTheme);
-
-                // Toggle icon
-                if (newTheme === 'dark') {
-                    icon.classList.remove('fa-moon');
-                    icon.classList.add('fa-sun');
-                } else {
-                    icon.classList.remove('fa-sun');
-                    icon.classList.add('fa-moon');
-                }
-            });
-        });
-    </script>
+<script src="/js/player.js"></script>
+<script src="/js/canvas-bg.js"></script>
 </body>
 </html>
