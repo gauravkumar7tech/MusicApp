@@ -34,7 +34,7 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/musicdb',
 }).then(() => console.log('MongoDB connected'))
   .catch(err => console.log(err))
 
-// Root route redirects to register
+  
 app.get('/', (req, res) => {
   if (req.session && req.session.user) {
     res.redirect('/music')
