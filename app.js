@@ -28,11 +28,14 @@ app.use(session({
   }
 }))
 
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/musicdb', {
+const mongoUri = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/musicdb'
+console.log('Connecting to MongoDB:', mongoUri.includes('mongodb+srv') ? 'MongoDB Atlas (Remote)' : 'Local MongoDB')
+
+mongoose.connect(mongoUri, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 }).then(() => console.log('MongoDB connected'))
-  .catch(err => console.log(err))
+  .catch(err => console.log('MongoDB Error:', err.message))
 
   
 app.get('/', (req, res) => {
