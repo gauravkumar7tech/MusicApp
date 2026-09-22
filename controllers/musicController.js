@@ -19,17 +19,6 @@ const musicController = {
     }
   },
 
-  getMusicByGenre: async (req, res) => {
-    try {
-      const { genre } = req.params
-      const music = await Music.find({ genre: new RegExp(genre, 'i') }).sort({ createdAt: -1 })
-      const likedIds = req.session.likedSongs || []
-      res.render('genre-suggestions', { music, genre: genre.charAt(0).toUpperCase() + genre.slice(1), likedIds })
-    } catch (error) {
-      res.status(500).render('error', { error: error.message })
-    }
-  },
-
   getAddMusicForm: (req, res) => res.render('add-music'),
 
   addMusic: async (req, res) => {

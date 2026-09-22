@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 const express = require('express')
 const mongoose = require('mongoose')
 const session = require('express-session')
@@ -9,35 +11,67 @@ const authRoutes = require('./routes/authRoutes')
 const { requireAuth } = require('./middleware/auth')
 
 const app = express()
+const defaultMongoUri = 'mongodb://127.0.0.1:27017/musicdb'
+const mongoUri = process.env.MONGODB_URI || defaultMongoUri
+const MemoryStore = session.MemoryStore || require('express-session').MemoryStore
+const basePort = Number(process.env.PORT) || 3000
 
 app.use(express.urlencoded({ extended: true }))
+app.use(express.json())
 app.use(express.static(path.join(__dirname, 'public')))
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'views'))
+
+let sessionStore = null
+try {
+  sessionStore = MongoStore.create({
+    mongoUrl: mongoUri,
+    collectionName: 'sessions'
+  })
+} catch (error) {
+  console.warn('Session store setup failed. Falling back to memory store:', error.message)
+}
 
 app.use(session({
   secret: process.env.SESSION_SECRET || 'your_secret_key',
   resave: false,
   saveUninitialized: false,
-  store: MongoStore.create({
-    mongoUrl: process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/musicdb',
-    collectionName: 'sessions'
-  }),
+  store: sessionStore || new MemoryStore(),
   cookie: {
-    maxAge: 1000 * 60 * 60 * 24 * 7  
+    maxAge: 1000 * 60 * 60 * 24 * 7
   }
 }))
 
-const mongoUri = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/musicdb'
-console.log('Connecting to MongoDB:', mongoUri.includes('mongodb+srv') ? 'MongoDB Atlas (Remote)' : 'Local MongoDB')
+const connectMongo = async () => {
+  const candidateUris = [mongoUri, defaultMongoUri]
+  const seen = new Set()
 
-mongoose.connect(mongoUri, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-}).then(() => console.log('MongoDB connected'))
-  .catch(err => console.log('MongoDB Error:', err.message))
+  for (const uri of candidateUris) {
+    if (seen.has(uri)) continue
+    seen.add(uri)
 
-  
+    try {
+      console.log('Connecting to MongoDB:', uri.includes('mongodb+srv') ? 'MongoDB Atlas (Remote)' : 'Local MongoDB')
+      await mongoose.connect(uri, {
+        serverSelectionTimeoutMS: 5000,
+        connectTimeoutMS: 5000,
+        socketTimeoutMS: 5000,
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+      })
+      console.log('MongoDB connected')
+      return
+    } catch (err) {
+      console.log(`MongoDB Error for ${uri}:`, err.message)
+      if (uri === defaultMongoUri) {
+        console.log('Continuing without MongoDB connection. Session storage is using memory fallback.')
+      }
+    }
+  }
+}
+
+connectMongo()
+
 app.get('/', (req, res) => {
   if (req.session && req.session.user) {
     res.redirect('/music')
@@ -53,14 +87,20 @@ app.use((req, res) => {
   res.status(404).render('error', { error: 'Page not found' })
 })
 
+const startServer = (port) => {
+  const server = app.listen(port, () => console.log(`Server running on port ${port}`))
 
-const PORT = process.env.PORT || 3000
+  server.on('error', (err) => {
+    if (err.code === 'EADDRINUSE') {
+      const nextPort = port + 1
+      console.log(`Port ${port} is busy, trying port ${nextPort}...`)
+      startServer(nextPort)
+      return
+    }
 
-const server = app.listen(PORT, () => console.log(`Server running on port ${PORT}`))
+    console.error('Server error:', err)
+    process.exit(1)
+  })
+}
 
-server.on('error', (err) => {
-  if (err.code === 'EADDRINUSE') {
-    console.log(`Port ${PORT} is busy, trying port ${PORT + 1}...`)
-    app.listen(PORT + 1, () => console.log(`Server running on port ${PORT + 1}`))
-  }
-})
+startServer(basePort)
