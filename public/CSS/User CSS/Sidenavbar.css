@@ -1,0 +1,938 @@
+@media (prefers-reduced-motion:no-preference) {
+    :root {
+        scroll-behavior: smooth
+    }
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #1a1a1a;
+    color: #ddd;
+    animation: fadeIn 1s ease-in;
+
+}
+
+.sidebar a:hover {
+    color: #c11dc1;
+    /*     color:#9D00FF;*/
+    background-color: #333;
+}
+
+.sidebar {
+    height: 100%;
+    width: 200px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #222;
+    color: #ddd;
+    padding: 20px;
+    z-index: 2;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    animation: slideInLeft 0.5s ease-out;
+}
+
+#trial img {
+    width: 200px;
+    height: auto;
+    display: block;
+    margin-top: -30px;
+    margin-left: -30px;
+    padding: 0;
+
+}
+
+.sidebar h2 {
+    margin-top: 0;
+    color: #fff;
+    font-size: 24px;
+    margin-bottom: 15px;
+
+
+}
+
+.sidebar a {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    text-decoration: none;
+    color: #ddd;
+    transition: background-color 0.3s;
+    border-radius: 10px;
+    margin-top: 20px;
+    font-size: large;
+}
+
+.sidebar a i {
+    width: 20px;
+    height: auto;
+    margin-right: 10px;
+}
+
+.sidebar a:first-child:hover {
+    background-color: transparent;
+    cursor: default;
+}
+
+.sidebar.light-mode a:first-child:hover {
+    background-color: transparent;
+    cursor: default;
+}
+
+.navbar {
+    height: 50px;
+    width: calc(100% - 200px);
+    background-color: #1a1a1a;
+    color: #ddd;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    left: 200px;
+    z-index: 1;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+    animation: slideInTop 0.5s ease-out;
+    transition: width 0.5s ease, left 0.5s ease;
+}
+.navbar-icons button {
+    background: transparent; /* Ensures no background color */
+    border: none; /* No borders */
+    padding: 10px; /* Adequate padding */
+    cursor: pointer; /* Cursor to pointer to indicate clickable */
+    color: #ddd; /* Text/icon color */
+    font-size: 20px; /* Icon size, adjust as necessary */
+    display: flex; /* Flex display to center items */
+    align-items: center; /* Center items vertically */
+    justify-content: center; /* Center items horizontally */
+}
+#game {
+    color: white; /* Styling the icon color to fit the theme */
+    transition: color 0.3s ease; /* Smooth transition for hover effects */
+}
+.light-mode #game{
+    color:black;
+}
+.navbar-icons button:hover {
+    background-color: transparent; /* Maintain transparent background on hover */
+}
+/* Hover effect for game icon */
+#game:hover {
+    color: #852b85; /* Change color on hover */
+}
+.navbar-icons {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.navbar-icons i:hover,
+img:hover {
+    transform: translateY(-5px);
+    color: #c11dc1;
+}
+
+.navbar-icons i,
+.navbar-icons button {
+    margin-right: 5px;
+}
+
+
+.chat-icon {
+    font-size: 29px;
+    margin-top: 7px;
+}
+
+.navbar h2 {
+    margin-top: 0;
+    color: #fff;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.navbar a {
+    display: inline-block;
+    padding: 10px 20px;
+    text-decoration: none;
+    color: #ddd;
+    opacity: 0;
+    animation: fadeIn 1s ease-in forwards;
+    animation-delay: 0.5s;
+}
+
+
+.sidebar-content,
+.navbar-content {
+    margin-top: 80px;
+    padding: 20px;
+    color: #ddd;
+    font-size: 16px;
+    opacity: 0;
+    animation: fadeIn 1s ease-in forwards;
+    animation-delay: 1s;
+}
+
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        transform: translateX(-100%);
+    }
+
+    to {
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInTop {
+    from {
+        transform: translateY(-100%);
+    }
+
+    to {
+        transform: translateY(0);
+    }
+}
+
+.search-container {
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+}
+
+
+.search-bar {
+    position: relative;
+    margin-left: 75px;
+}
+
+.search-icon {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    fill: #ccc;
+}
+
+.search-bar input[type="text"] {
+    padding: 10px 10px 10px 40px;
+    border-radius: 5px;
+    border: none;
+    font-size: 16px;
+    width: 500px;
+    background-color: #222;
+    color: #ddd;
+    margin-right: 5px;
+}
+
+
+#search-button {
+    width: 40px; /* Adjust button width as needed */
+    height: 40px; /* Adjust button height as needed */
+    border: none;
+    background-color: transparent; /* Set background to transparent */
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 7px;
+}
+
+#search-button i {
+    font-size: 26px; /* Adjust icon size as needed */
+    color:#ddd;;
+}
+.light-mode #search-button i{
+    color: black;
+}
+
+body.light-mode .search-bar input[type="text"]:focus {
+    border: 2px solid #852b85;
+    outline: none;
+}
+
+.light-mode .search-bar input[type="text"] {
+    padding: 10px 10px 10px 40px;
+    border-radius: 5px;
+    border: none;
+    font-size: 16px;
+    width: 500px;
+    background-color: #cccbcb;
+    color: #222;
+    margin-right: 5px;
+}
+
+#profile-icon {
+    width: 39px;
+    height: 39px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-right: 32px;
+    margin-top: 7px;
+    margin-bottom: 10px;
+}
+
+
+#profile-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+
+.profile_dropDownMenu {
+    position: absolute;
+    top: 80px;
+    right: 50px;
+    background-color: #413a41;
+    box-shadow: 0 2px 5px rgba(34, 27, 174, 0.2);
+    border-radius: 5px;
+    padding: 7px;
+    z-index: 1;
+    border: 1px solid #413a41;
+    width: 140px;
+    align-items: center;
+    display: none;
+}
+
+.show {
+    max-height: 200px;
+}
+
+.menu-item {
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.menu-item i {
+    width: 19px;
+    height: 19px;
+    padding-left: 4px;
+}
+
+
+.menu-item a {
+    text-decoration: solid;
+    font-size: 13px;
+    color: #ddd;
+    padding-right: 4px;
+    padding-left: 4px;
+    animation: none;
+    opacity: 1;
+}
+
+@media (max-width: 768px) {
+    .navbar-icons {
+        justify-content: flex-end;
+        width: 100%;
+        padding-right: 20px;
+    }
+}
+
+footer {
+    font-size: small;
+    height: 50px; /* Increase the height to accommodate the button */
+    background-color: #1a1a1a;
+    color: #ddd;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid #ccc;
+}
+
+.footer-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.text-center {
+    text-align: center;
+    flex-grow: 1;
+}
+
+.social-icons {
+    margin-left: auto;
+    padding-right: 15px;
+    margin-bottom: 10px; /* Add margin bottom to create space between the button and footer */
+    margin-right: 80px;
+}
+
+.social-icons a img {
+    width: 28px;
+    height: auto;
+    margin-left: 10px;
+}
+
+body.light-mode {
+    background-color: #fff;
+    color: #000;
+}
+
+
+.light-mode .navbar {
+    background-color: #f0f0f0;
+    color: #000;
+}
+
+
+.light-mode .sidebar {
+    background-color: #f0f0f0;
+    color: #000;
+}
+
+
+.light-mode footer {
+    background-color: #fff;
+    color: #000;
+}
+
+.light-mode .sidebar a {
+
+    color: #000;
+}
+
+.light-mode .navbar a {
+
+    color: #000;
+}
+
+
+
+.profile_dropDownMenu .menu-item {
+    position: relative;
+}
+/* Add this CSS to style the toggle button */
+#toggle-light-mode {
+    width: 30px;
+    height: 20px;
+    background-color: #ccc;
+    border: none;
+    border-radius: 15px;
+    position: absolute;
+    top: 50%;
+    right: -5px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+#toggle-light-mode::before {
+    content: '';
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    background-color: white;
+    border-radius: 50%;
+    top: 50%;
+    left: 2px;
+    transform: translateY(-50%);
+    transition: transform 0.3s ease;
+}
+
+#toggle-light-mode.active {
+    background-color: #c11dc1; /* Dark purple color */
+}
+
+.light-mode #toggle-light-mode::before {
+    transform: translateX(12px) translateY(-50%);
+}
+
+
+.profile_dropDownMenu.light-mode .menu-item a {
+    color: #000;
+    transition: none;
+}
+
+.profile_dropDownMenu .menu-item a {
+    font-size: 13px;
+}
+
+.profile_dropDownMenu .menu-item {
+    transition: color 0.3s ease;
+}
+
+.profile_dropDownMenu .menu-item a:hover,
+.menu-item i:hover {
+    color: #852b85;
+    font-weight: bold;
+}
+
+.profile_dropDownMenu .menu-item i:hover+a {
+    color: #c11dc1;
+}
+
+.profile_dropDownMenu .menu-item a:hover+i {
+    color: #c11dc1;
+}
+
+.sidebar.light-mode a:hover {
+    color: #800080;
+    background-color: #cccbcb;
+}
+
+.dark-mode-img {
+    display: none;
+}
+
+.light-mode .dark-mode-img {
+    display: inline;
+}
+
+.light-mode .light-mode-img {
+    display: none;
+}
+
+body.light-mode .profile_dropDownMenu {
+    background-color: #f0f0f0;
+    border: 1px solid #852b85;
+}
+
+.sidebar {
+    transition: width 0.5s ease;
+}
+
+
+.sidebar-minimized {
+    width: 50px;
+}
+
+.sidebar-minimized .sidebar-content {
+    display: none;
+}
+
+.sidebar-minimized .text-a .t {
+    display: none;
+}
+
+.sidebar.sidebar-minimized .text-a .icons{
+
+    display: inline-block;
+    margin-right: 0;
+    width: 20px;
+    height: auto;
+    margin-right: 10px;
+    transition: width 0.5s ease, left 0.5s ease;
+
+}
+
+.sidebar.sidebar-minimized a .dark-mode-img {
+    display: none;
+}
+
+.sidebar.light-mode.sidebar-minimized a .dark-mode-img {
+
+    display: inline-block;
+    margin-right: 0;
+    width: 20px;
+    height: auto;
+    margin-right: 10px;
+    transition: width 0.5s ease, left 0.5s ease;
+
+}
+
+
+#trial-img.minimized {
+    width: 50px;
+    height: auto;
+    display: block;
+    margin-left: -15px;
+    margin-top: 20%;
+    transform: translateY(-50%);
+    margin-bottom: -25px;
+    transition: transform 0.3s ease-in-out;
+}
+
+
+.sidebar.sidebar-minimized a .light-mode-img {
+    width: 25px;
+    height: 25px;
+    margin-right: 20px;
+    transition: width 0.5s ease, left 0.5s ease;
+
+}
+
+.sidebar.sidebar-minimized.light-mode a .light-mode-img {
+    display: none;
+}
+
+.sidebar.sidebar-minimized a .dark-mode-img {
+    width: 25px;
+    height: 25px;
+    margin-right: 20px;
+    transition: width 0.5s ease, left 0.5s ease;
+
+}
+
+.sidebar-minimized+.navbar {
+    width: calc(100% - 50px);
+    left: 50px;
+}
+
+#custom-sidebar-toggle {
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+#custom-sidebar-img {
+    width: 40px;
+    height: auto;
+    transition: width 0.5s ease;
+}
+
+
+.light-mode #custom-sidebar-img.light-mode-img {
+    display: none;
+}
+
+.sidebar a#trial:hover {
+    color: inherit;
+    background-color: transparent;
+}
+
+
+
+
+
+
+    .settings-popup-container {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 400px; /* Adjust width as needed */
+        height: 300px;
+        background-color: #222; /* Dark mode background */
+        color: #ddd; /* Text color */
+        border-radius: 15px; /* Soften borders */
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4); /* Soft shadow */
+        z-index: 9999;
+    }
+    
+    .settings-popup {
+        width: 100%; /* Adjust width as needed */
+        height: 100%; /* Adjust height as needed */
+        z-index: 10000; /* Ensure that the popup appears above the overlay */
+    }
+
+
+.settings-content {
+    max-width: 300px; /* Increase width as needed */
+}
+
+.settings-popup h3 {
+    font-size: 30px; /* Increase font size */
+    color: #ccc; /* Text color */
+    margin-left: 170px; /* Adjust margin-left */
+}
+
+.language-selection {
+    margin-bottom: 20px; /* Increase margin for spacing */
+    margin-left: 20px; /* Add margin-left */
+    display: flex; /* Use flexbox */
+    align-items: center; /* Vertically center items */
+}
+
+.language-selection select {
+    width: 150px; /* Decrease width */
+    padding: 8px; /* Increase padding for better appearance */
+    border-radius: 8px; /* Soften borders */
+    border: 1px solid #ccc; /* Light border */
+    background-color: #333; /* Dark mode background */
+    color: #ddd; /* Text color */
+    font-size: 14px; /* Decrease font size */
+    margin-left: 10px; /* Adjust margin-left */
+}
+
+.language-selection label {
+    display: block;
+    margin-bottom: 10px; /* Increase margin for spacing */
+}
+
+.light-mode .settings-popup  {
+    background-color: #f0f0f0; /* Light mode background */
+    color: #222; /* Text color */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Soft shadow for light mode */
+}
+
+.light-mode .settings-popup h3 {
+    color: #222; /* Text color for h3 in light mode */
+}
+
+.light-mode .language-selection  select {
+    background-color: #ccc; /* Background color for select in light mode */
+    color: #222; /* Text color for select in light mode */
+    border-color: #ccc; /* Border color for select in light mode */
+}
+
+.button-group {
+    margin-top: 20px;
+    margin-left: 150px;
+    display: flex; /* Use flexbox to align buttons horizontally */
+}
+
+.button-group button {
+    padding: 10px 20px;
+    margin-right: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #800080;
+    color: #fff;
+    font-size: 16px;
+}
+
+.button-group button:last-child {
+    margin-right: 0; /* Remove right margin for the last button */
+}
+
+.button-group button:hover {
+    background-color: #6a006a;
+}
+
+.light-mode 
+.settings-popup-container {
+   background-color: #f0f0f0;
+}
+
+
+/* Style for profile editing window */
+.modal {
+    display: none;
+    text-align: center;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+  
+  .edit-content {
+    background-color: #1a1a1a;
+    margin: 15% auto;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 33%;
+  }
+  
+  .edit-content h2 {
+    font-size: 50px;
+    margin-bottom: 20px;
+    color: white;
+  }
+  
+  .edit-content input[type="text"],
+  .edit-content input[type="email"],
+  .edit-content input[type="file"],
+  .edit-content button {
+    background-color: #3b3a3a;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .edit-content input[type="text"]::placeholder,
+  .edit-content input[type="file"]::placeholder {
+    color: #b4aaaa;
+  }
+  
+  .edit-content button {
+    cursor: pointer;
+    font-size: 15px;
+    background-color: #6a0dad; /* Dark purple background color */
+    transition: background-color 0.3s ease; /* Smooth transition effect */
+    border: none; /* Remove button border */
+    display: inline-block; /* Make buttons display inline-block */
+    margin-right: 10px; /* Add spacing between buttons */
+  }
+  
+  .edit-content button:hover {
+    background-color: #4c0073; /* Darker purple on hover */
+  }
+  
+  /* Light mode styles */
+.light-mode .edit-content {
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    color: black;
+  }
+  
+  .light-mode .edit-content h2 {
+    color: black;
+  }
+  
+  .light-mode .edit-content input[type="text"],
+  .light-mode .edit-content input[type="email"],
+  .light-mode .edit-content input[type="file"] {
+    background-color: white;
+    color: black;
+    border: none; /* Remove button border */
+    border-radius: 12px;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .light-mode .edit-content input[type="text"]::placeholder,
+  .light-mode .edit-content input[type="file"]::placeholder {
+    color: #ccc;
+  }
+  
+  /* Style only the create button in light mode */
+  .light-mode .edit-content .create-button {
+    background-color: #6a0dad; /* Dark purple background color */
+  }
+
+  
+  .light-mode .edit-content button:hover {
+    background-color: #4c0073; /* Darker purple on hover */
+  }
+  
+  #modalHeader {
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 40px;
+}
+
+#badges {
+    margin-right: 10px; /* Adjust the position if needed */
+}
+
+.badges-dropdown {
+    display: none; /* Ensure it's hidden by default */
+    position: absolute;
+    background-color: #333;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    border-radius: 5px;
+    top: 50px;
+    right: 0;
+    z-index: 5;
+}
+
+.light-mode .badges-dropdown {
+    background-color: #fff; /* White background in light mode */
+}
+
+.badges-dropdown .menu-item {
+    padding: 10px 20px;
+    white-space: nowrap;
+    color: #ddd; /* Default text color */
+}
+
+.light-mode .badges-dropdown .menu-item {
+    color: #000; /* Black text in light mode for visibility */
+}
+
+.badges-dropdown .menu-item:hover {
+    background-color: #555;
+}
+
+.light-mode .badges-dropdown .menu-item:hover {
+    background-color: #ddd;
+}
+
+@media (max-width: 768px) {
+    .search-bar {
+        display: none;  /* Hide the search bar */
+    }
+
+    .search-button {
+        display: flex;  /* Show the search button */
+    }
+}
+#mic-button{
+    background-color: transparent;
+    font-size: 25px;
+    border: none;
+    color: white;
+}
+
+.light-mode #mic-button{
+    color: #000;
+}
+
+.light-mode .mod-content{
+    background-color: #fff;
+}
+.light-mode #micIcon{
+    color:#646464;
+}
+
+#micModal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.mod-content {
+    background-color: #3b3a3a;
+    margin: 15% auto;
+    padding: 60px;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.close {
+    position: relative;
+    top:-40px;
+    right:-20px;
+    color: #aaa;
+    float: right;
+    font-size: 30px;
+    font-weight: bold;
+    cursor: pointer;
+    background-color: transparent;
+}
+
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+}
+
+#micIcon {
+    font-size:90px;
+    color: #c9c9c9;
+    animation: pulse 1.2s ease-in-out infinite alternate;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(0.9);
+    }
+    100% {
+        transform: scale(1.1);
+    }
+}

@@ -1,0 +1,38 @@
+.title{
+color:rgb(86, 84, 84);
+    margin-left:300px;
+    font-family:cursive;
+}
+@media screen and (max-width: 768px) {
+    .title {
+        text-align: center;
+        font-size: 2em; 
+        margin-top: 1em;
+        margin-left: 0; 
+        margin-right: 0; 
+    }}
+
+
+    .box i
+    {
+        color: #800080;
+    }
+    .box a
+    {
+        text-decoration: none;
+    }
+    .box-container   
+    {
+        margin-top:80px;
+    }
+
+    .text100 {
+        color: #ddd;
+        font-size: 25px;
+        text-align: center;
+        margin: 40px;
+    }
+    .light-mode .text100
+    {
+        color:black;
+    }
