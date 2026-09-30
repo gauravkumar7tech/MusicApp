@@ -3,6 +3,7 @@ const IssueReport = require("../models/IssueReport.js");
 const express = require("express");
 const loginController = require("../controllers/loginController");
 const signupController = require("../controllers/signupController");
+const verifyController = require("../controllers/verifyController");
 const CommunityGuidelines = require("../models/Communityguidelinesschema");
 const CompanyOverviewModel = require("../models/company");
 const userController = require("../controllers/userController");
@@ -395,6 +396,8 @@ router.post("/login", loginController.loginProcess);
 
 // Process signup
 router.post("/signup", signupController.registrationProcess);
+router.post("/verify-otp", verifyController.verifyOtp);
+router.post("/resend-otp", verifyController.resendOtp);
 
 
 

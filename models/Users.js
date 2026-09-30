@@ -54,6 +54,23 @@ const userSchema = new mongoose.Schema({
   verificationToken: {
     type: String,
   },
+  verificationCodeHash: {
+    type: String,
+  },
+  verificationCodeExpiresAt: {
+    type: Date,
+  },
+  verificationCodeSentAt: {
+    type: Date,
+  },
+  verificationAttempts: {
+    type: Number,
+    default: 0,
+  },
+  verificationMethod: {
+    type: String,
+    enum: ['email', 'phone'],
+  },
   isVerified: {
     type: Boolean,
     default: false,

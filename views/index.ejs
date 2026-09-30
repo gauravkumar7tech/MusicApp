@@ -13,6 +13,7 @@
         <div class="form-container sign-up">
             <form id="signupForm" onsubmit="return validateForm(event, this)" action="/auth/signup" method="POST">
                 <h1>Create Account</h1>
+                <div id="signupFields">
                 <div class="social-icons">
                     <a href="#" class="icon"><i class="fa-brands fa-google-plus-g"></i></a>
                     <a href="#" class="icon"><i class="fa-brands fa-facebook-f"></i></a>
@@ -30,6 +31,16 @@
                 <div class="error" id="confpassErr"></div>
                 <input type="text" placeholder="Phone" name="phone_number">
                 <div class="error" id="mobileErr"></div>
+                <fieldset class="verification-choice">
+                    <legend>Choose OTP delivery method</legend>
+                    <div class="verification-options">
+                        <input type="radio" id="verifyByEmail" name="verificationMethod" value="email" checked>
+                        <label for="verifyByEmail">Email address</label>
+                        <input type="radio" id="verifyByPhone" name="verificationMethod" value="phone">
+                        <label for="verifyByPhone">Phone number</label>
+                    </div>
+                </fieldset>
+                <div class="error" id="verificationMethodErr"></div>
                 <div class="gender">
                     <input type="radio" id="male" name="gender" value="Male">
                     <label for="male">Male</label>
@@ -47,6 +58,15 @@
                 <div class="error" id="countryErr"></div>
                 <input type="hidden" name="type" value="user">
                 <button type="submit">Sign Up</button>
+                </div>
+                <div id="otpSection" hidden>
+                    <p id="otpMessage" role="status"></p>
+                    <label for="verificationCode">6-digit verification code</label>
+                    <input id="verificationCode" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" pattern="[0-9]{6}">
+                    <button type="button" id="verifyOtpButton">Verify code</button>
+                    <button type="button" id="resendOtpButton">Resend code</button>
+                    <div class="error" id="otpErr" role="alert"></div>
+                </div>
                 <div class="error" id="generalErr"></div>
             </form>
         </div>

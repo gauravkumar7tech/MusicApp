@@ -84,15 +84,62 @@ async function validateForm(event, form) {
                 displayErrors({ general: 'Registration failed' });
             }
         } else {
-            document.getElementById("generalErr").innerText = result.message;
-            document.getElementById("generalErr").style.color = "green";
-            form.reset();
+            document.getElementById('signupFields').hidden = true;
+            document.getElementById('otpSection').hidden = false;
+            document.getElementById('otpMessage').innerText = result.message;
+            document.getElementById('generalErr').innerText = '';
+            document.getElementById('otpErr').innerText = '';
         }
     } catch (error) {
         console.error('Error during form submission:', error);
         displayErrors({ general: 'Error during form submission. Please try again later.' });
     }
 }
+
+async function submitOtpRequest(path, body) {
+    const response = await fetch(path, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+    });
+    const result = await response.json();
+    if (!response.ok || !result.success) {
+        throw new Error(result.message || 'The request could not be completed.');
+    }
+    return result;
+}
+
+document.getElementById('verifyOtpButton').addEventListener('click', async () => {
+    const email = document.querySelector('#signupForm [name="email"]').value.trim();
+    const code = document.getElementById('verificationCode').value.trim();
+    const otpError = document.getElementById('otpErr');
+    otpError.innerText = '';
+
+    try {
+        const result = await submitOtpRequest('/auth/verify-otp', { email, code });
+        document.getElementById('otpSection').hidden = true;
+        document.getElementById('signupFields').hidden = false;
+        document.getElementById('signupForm').reset();
+        container.classList.remove('active');
+        document.getElementById('loginErr').innerText = result.message;
+        document.getElementById('loginErr').style.color = 'green';
+    } catch (error) {
+        otpError.innerText = error.message;
+    }
+});
+
+document.getElementById('resendOtpButton').addEventListener('click', async () => {
+    const email = document.querySelector('#signupForm [name="email"]').value.trim();
+    const otpError = document.getElementById('otpErr');
+    otpError.innerText = '';
+
+    try {
+        const result = await submitOtpRequest('/auth/resend-otp', { email });
+        document.getElementById('otpMessage').innerText = result.message;
+    } catch (error) {
+        otpError.innerText = error.message;
+    }
+});
 
 function displayErrors(errors) {
     if (errors.name) {
@@ -119,6 +166,11 @@ function displayErrors(errors) {
         document.getElementById("mobileErr").innerText = errors.phone_number;
     } else {
         document.getElementById("mobileErr").innerText = "";
+    }
+    if (errors.verificationMethod) {
+        document.getElementById('verificationMethodErr').innerText = errors.verificationMethod;
+    } else {
+        document.getElementById('verificationMethodErr').innerText = '';
     }
     if (errors.gender) {
         document.getElementById("genderErr").innerText = errors.gender;

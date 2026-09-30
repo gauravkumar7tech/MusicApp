@@ -1,11 +1,33 @@
 const User = require("../models/Users.js");
 const bcrypt = require("bcrypt");
 const crypto = require('crypto');
-const { sendVerificationEmail } = require("../services/emailService.js");
+const {
+    sendVerificationOtpEmail,
+    sendVerificationOtpSms,
+} = require("../services/emailService.js");
+
+const hashVerificationCode = (email, code) => crypto
+    .createHmac('sha256', process.env.SESSION_SECRET || 'development-only-secret')
+    .update(`${email}:${code}`)
+    .digest('hex');
+
+const getPhoneWithCountryCode = (phone, country) => {
+    const countryCodes = {
+        Australia: '+61',
+        India: '+91',
+        'United States': '+1',
+        'United Kingdom': '+44',
+    };
+    const nationalNumber = ['Australia', 'United Kingdom'].includes(country)
+        ? phone.replace(/^0/, '')
+        : phone;
+    return `${countryCodes[country]}${nationalNumber}`;
+};
 
 const registrationProcess = async (req, res) => {
     try {
-        const { firstname, email, password, confirmPassword, phone_number, gender, country, type } = req.body;
+        const { firstname, email: submittedEmail, password, confirmPassword, phone_number, gender, country, verificationMethod } = req.body;
+        const email = (submittedEmail || '').trim().toLowerCase();
 
         const errors = {};
 
@@ -41,8 +63,12 @@ const registrationProcess = async (req, res) => {
             errors.gender = 'Please select your gender';
         }
 
-        if (country === 'Select') {
+        if (!['Australia', 'India', 'United States', 'United Kingdom'].includes(country)) {
             errors.country = 'Please select your country';
+        }
+
+        if (!['email', 'phone'].includes(verificationMethod)) {
+            errors.verificationMethod = 'Choose email or phone verification';
         }
 
         
@@ -57,7 +83,15 @@ const registrationProcess = async (req, res) => {
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
-        const verificationToken = crypto.randomBytes(32).toString('hex');
+        const verificationCode = crypto.randomInt(100000, 1000000).toString();
+        const now = new Date();
+        const verificationCodeHash = hashVerificationCode(email, verificationCode);
+
+        if (verificationMethod === 'email') {
+            await sendVerificationOtpEmail(email, verificationCode);
+        } else {
+            await sendVerificationOtpSms(getPhoneWithCountryCode(phone_number, country), verificationCode);
+        }
 
         const newUser = new User({
             username: firstname,
@@ -67,14 +101,17 @@ const registrationProcess = async (req, res) => {
             gender,
             country,
             type: 'user',
-            verificationToken,
+            verificationCodeHash,
+            verificationCodeExpiresAt: new Date(now.getTime() + 10 * 60 * 1000),
+            verificationCodeSentAt: now,
+            verificationAttempts: 0,
+            verificationMethod,
             isVerified: false,
         });
 
         await newUser.save();
-        await sendVerificationEmail(email, verificationToken);
 
-        res.status(200).json({ success: true, message: "Registration successful. Please check your email to verify your account." });
+        res.status(200).json({ success: true, message: `A verification code was sent to your ${verificationMethod}.` });
     } catch (error) {
         console.error(error);
 
@@ -87,7 +124,7 @@ const registrationProcess = async (req, res) => {
             });
         }
 
-        res.status(500).json({ success: false, errors: { general: 'Internal Server Error' } });
+        res.status(500).json({ success: false, errors: { general: error.message || 'Could not send the verification code. Check your provider settings and try again.' } });
     }
 };
 

@@ -218,6 +218,59 @@ body{
     width: 100%;
     outline: none;
 }
+
+#signupFields,
+#otpSection {
+    width: 100%;
+}
+
+#signupFields[hidden],
+#otpSection[hidden] {
+    display: none;
+}
+
+#signupFields {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+#otpSection {
+    padding: 24px 0;
+}
+
+.verification-choice {
+    align-self: stretch;
+    margin-top: 8px;
+    padding: 0;
+    border: 0;
+    font-size: 12px;
+}
+
+.verification-choice legend {
+    margin-bottom: 6px;
+}
+
+.verification-options {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.verification-options input[type="radio"] {
+    width: auto;
+    margin: 6px 0;
+    accent-color: #512da8;
+}
+
+.verification-options label {
+    margin-right: 8px;
+    cursor: pointer;
+}
+
+#otpSection button + button {
+    margin-left: 8px;
+}
 .gender {
     margin-top: 10px;
 }
