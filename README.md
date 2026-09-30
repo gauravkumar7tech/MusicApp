@@ -44,7 +44,7 @@ Sound On Spot 👌
 
 ## Authors
 
-- [Gaurav](https://github.com/gauravkumar7tech) 
+- [Gaurav Kumar](https://github.com/gauravkumar7tech) 
 # Landing Page  
 
 
